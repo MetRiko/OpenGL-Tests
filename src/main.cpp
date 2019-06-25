@@ -9,60 +9,6 @@
 
 namespace gl {
 
-	struct RenderObject {
-
-	};
-
-	struct Canvas {
-
-	};
-
-	struct Engine {
-
-		Window* window = nullptr;
-
-		std::function<void()> eventsFunction;
-		std::function<void()> updateFunction;
-		std::function<void()> renderFunction;
-
-		void setup(Window& window) {
-			this->window = &window;
-
-			while(isWindowOpen()) {
-
-				// Events
-				checkEscapeButton();
-				eventsFunction();
-
-				// Update
-				updateFunction();
-
-				// Render
-				glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				renderFunction();
-
-				// Finish
-				glfwPollEvents();
-				glfwSwapBuffers(window);
-			}
-		}
-
-		bool isWindowOpen() {
-			return !glfwWindowShouldClose(*window);
-		}
-
-		void checkEscapeButton() {
-			if (glfwGetKey(*window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-				glfwSetWindowShouldClose(*window, true);
-		}
-
-		void setFunctions(auto events, auto update, auto render) {
-			eventsFunction = events;
-			updateFunction = update;
-			renderFunction = render;
-		}
-	};
 }
 
 int main()
@@ -115,7 +61,7 @@ int main()
 
 	engine.setFunctions(
 		[&window](){},
-		[&window](){},
+		[&window](double deltaTime){},
 		[&](){
 			vao.draw();
 		}
