@@ -2,6 +2,9 @@
 
 #include <array>
 #include <iostream>
+#include <fstream>
+#include <streambuf>
+#include <string_view>
 
 #include <glm/vec3.hpp>
 
@@ -88,6 +91,36 @@ namespace gl {
 				else if (type == Fragment) 
 				    gl::Logger.log("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n", infoLog, '\n');
 			}
+		}
+
+		void load(const std::string_view& filepath, int type = -1) {
+			std::ifstream file;
+			file.open(filepath.data());
+			if (file.good()) 
+			{
+				if (type == -1) {					
+					std::string_view ext = filepath.substr(filepath.find_last_of('.'));
+					// gl::Logger.log(ext, "\n");
+					if (ext == ".vert")
+						this->type = Vertex;
+					else if (ext == ".frag")
+						this->type = Fragment;
+				}
+				else {
+					this->type = type;
+				}
+
+				std::stringstream ss;
+				ss << file.rdbuf();
+				this->src = ss.str();
+
+				// gl::Logger.log(this->src);
+
+				file.close();
+			}
+			else
+				gl::Logger.log("ERROR::SHADER::LOADING_SHADER_FILE ", filepath);
+
 		}
 
 		void source(unsigned int type, const std::string& src) {

@@ -34,11 +34,13 @@ int main()
 	gl::ShaderProgram shaderProgram;
 	{
 		gl::Shader vertex;
-		vertex.source(gl::Shader::Vertex);
+		// vertex.source(gl::Shader::Vertex);
+		vertex.load("shaders/default.vert");
 		vertex.setup();
 
 		gl::Shader fragment;
-		fragment.source(gl::Shader::Fragment);
+		// fragment.source(gl::Shader::Fragment);
+		fragment.load("shaders/default.frag");
 		fragment.setup();
 
 		shaderProgram.attach(vertex, fragment);
