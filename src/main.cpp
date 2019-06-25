@@ -6,6 +6,7 @@
 #include <Core/buffers.hpp>
 #include <Core/shaders.hpp>
 #include <Core/logger.hpp>
+#include <Core/engine.hpp>
 
 namespace gl {
 
