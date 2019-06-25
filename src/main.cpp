@@ -51,6 +51,7 @@ int main()
 		 0.5f, -0.5f,  0.0f,
 		-0.5f, -0.5f,  0.0f
     });
+    vao.primitive(gl::VAO::Triangles);
     vao.applyShader(shaderProgram);
     vao.setup();
 
