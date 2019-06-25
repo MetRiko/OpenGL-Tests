@@ -15,7 +15,8 @@ namespace gl {
 		int minor = 0;
 		glm::vec2 screenSize {100, 100};
 		std::string title;
-	
+		int aaLevel = 0;
+
 		GLFWwindow* window = nullptr;
 
 		~Window() {
@@ -40,7 +41,18 @@ namespace gl {
 			this->title = title;
 		}
 
+		void setAntyAliasing(int aaLevel) {
+			this->aaLevel = aaLevel;
+		}
+
 		void setup() {
+
+			gl::Logger.log("starting GLFW\n", glfwGetVersionString(), '\n');
+
+			glfwSetErrorCallback([](int error, const char* description){
+				gl::Logger.log("GLFW ERROR: code ", error, " msg: ", description, '\n');
+			});
+
 			if (not glfwInit()) {
 				gl::Logger.log("ERROR::GLFW::COULD_NOT_START\n");
 				return;
@@ -50,17 +62,18 @@ namespace gl {
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
 				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
 			}
-			else {
-				// glGetIntegerv(GL_MAJOR_VERSION, &major); 
-				// glGetIntegerv(GL_MINOR_VERSION, &minor); 
-				// std::cout<<major<<' '<<minor<<std::endl;
-				// glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
-				// glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
-			}
+
 			// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 			// glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			
+			glfwWindowHint(GLFW_SAMPLES, aaLevel);
+
+			// GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+			// const GLFWvidmode* vmode = glfwGetVideoMode(monitor);
+			// window = glfwCreateWindow(vmode->width, vmode->height, title.c_str(), monitor, nullptr);
 
 			window = glfwCreateWindow(screenSize.x, screenSize.y, title.c_str(), nullptr, nullptr);
+			
 			if (window == nullptr) {
 				gl::Logger.log("ERROR::WINDOW::FAILED_TO_CREATE_WINDOW\n");
 				glfwTerminate();
