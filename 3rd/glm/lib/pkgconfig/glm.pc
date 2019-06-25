@@ -1,0 +1,7 @@
+prefix=D:\Dev\Projects\OpenGL\Basics\3rd\glm\prefix
+includedir=${prefix}/include
+
+Name: GLM
+Description: OpenGL Mathematics
+Version: 0.9.9
+Cflags: -I${includedir}
