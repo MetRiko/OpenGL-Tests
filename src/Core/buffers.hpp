@@ -12,77 +12,6 @@
 
 namespace gl {
 
-	template <size_t Size>
-	struct VBO {
-		std::array<float, Size> vertices;
-
-		unsigned int vboId;
-
-		VBO() {
-		}
-
-		VBO(float const(&src)[Size]) {
-			define(src);
-		}
-
-		constexpr VBO& operator=(float const(&src)[Size]) {
-			std::copy(std::begin(src), std::end(src), std::begin(vertices));
-			return *this;
-		}
-
-		void define(float const(&src)[Size]) {
-			std::copy(std::begin(src), std::end(src), std::begin(vertices));
-		}
-
-		void create() {
-			glGenBuffers(1, &vboId);
-		}
-
-		void bind() {
-			glBindBuffer(GL_ARRAY_BUFFER, vboId);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		}
-
-		void addVertexAttribPointer(unsigned int id, unsigned int size) {
-
-			glVertexAttribPointer(id, size, GL_FLOAT, GL_FALSE, size * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(id);  
-		}
-
-		void setup() {
-			create();
-			bind();
-		}
-
-		void print() {
-			for(int i=0; i<Size; ++i) {
-				std::cout<<vertices[i]<<' ';
-			}
-			std::cout<<'\n';
-		}
-	};
-
-	struct VBOD {
-		std::vector<glm::vec3> vertices;
-
-		unsigned int vboId;
-
-		void addVertex(glm::vec3 point) {
-			vertices.emplace_back(point);
-		}
-
-		void create() {
-			glGenBuffers(1, &vboId);
-		}
-
-		void print() {
-			for(auto& vec : vertices) {
-				std::cout << vec.x << ' ' << vec.y << ' ' << vec.z << ", ";
-			}
-			std::cout<<'\n';
-		}
-	};
-
 	struct VAO {
 
 		std::vector<float> vertices;
@@ -199,4 +128,79 @@ namespace gl {
 		}
 
 	};
+
+
+// * * * Not ready yet : Work held * * * //
+
+	// template <size_t Size>
+	// struct VBO {
+	// 	std::array<float, Size> vertices;
+
+	// 	unsigned int vboId;
+
+	// 	VBO() {
+	// 	}
+
+	// 	VBO(float const(&src)[Size]) {
+	// 		define(src);
+	// 	}
+
+	// 	constexpr VBO& operator=(float const(&src)[Size]) {
+	// 		std::copy(std::begin(src), std::end(src), std::begin(vertices));
+	// 		return *this;
+	// 	}
+
+	// 	void define(float const(&src)[Size]) {
+	// 		std::copy(std::begin(src), std::end(src), std::begin(vertices));
+	// 	}
+
+	// 	void create() {
+	// 		glGenBuffers(1, &vboId);
+	// 	}
+
+	// 	void bind() {
+	// 		glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	// 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	// 	}
+
+	// 	void addVertexAttribPointer(unsigned int id, unsigned int size) {
+
+	// 		glVertexAttribPointer(id, size, GL_FLOAT, GL_FALSE, size * sizeof(float), (void*)0);
+	// 		glEnableVertexAttribArray(id);  
+	// 	}
+
+	// 	void setup() {
+	// 		create();
+	// 		bind();
+	// 	}
+
+	// 	void print() {
+	// 		for(int i=0; i<Size; ++i) {
+	// 			std::cout<<vertices[i]<<' ';
+	// 		}
+	// 		std::cout<<'\n';
+	// 	}
+	// };
+
+	// struct VBOD {
+	// 	std::vector<glm::vec3> vertices;
+
+	// 	unsigned int vboId;
+
+	// 	void addVertex(glm::vec3 point) {
+	// 		vertices.emplace_back(point);
+	// 	}
+
+	// 	void create() {
+	// 		glGenBuffers(1, &vboId);
+	// 	}
+
+	// 	void print() {
+	// 		for(auto& vec : vertices) {
+	// 			std::cout << vec.x << ' ' << vec.y << ' ' << vec.z << ", ";
+	// 		}
+	// 		std::cout<<'\n';
+	// 	}
+	// };
+
 }
