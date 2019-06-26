@@ -42,19 +42,19 @@ namespace gl {
 		}
 
 		void createVBO() {
-			glGenBuffers(1, &vboId);
+			if (not vertices.empty())
+				glGenBuffers(1, &vboId);
 		}
 
 		void createEBO() {
-			// Later
+			if (not indices.empty())
+				glGenBuffers(1, &eboId);
 		}
 
 		void create() {
 			createVAO();
-			if (not vertices.empty())
-				createVBO();
-			if (not indices.empty())
-				createEBO();
+			createVBO();
+			createEBO();
 		}
 
 		void primitive(int type) {
@@ -72,19 +72,20 @@ namespace gl {
 		}
 
 		void bindEBO() {
-			// Later
-
-			// if (not vertices.empty()) {
-			// 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-			// 	int size = sizeof(float) * vertices.size();
-			// 	glBufferData(GL_ARRAY_BUFFER, size, &vertices.front(), GL_STATIC_DRAW);
-			// 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-			// 	glEnableVertexAttribArray(0);
-			// }
+			if (not indices.empty()) {
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
+			}
 		}
 
 		void configure() {
 			bindVAO();
+
+			bindEBO();
+			if (not indices.empty()) {
+				int size = sizeof(unsigned int) * indices.size();
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, &indices.front(), GL_STATIC_DRAW);
+			}
+
 			bindVBO();
 			if (not vertices.empty()) {
 				int size = sizeof(float) * vertices.size();
@@ -122,7 +123,12 @@ namespace gl {
 		void draw() {
 			useShader();
 			bindVAO();			
-			glDrawArrays(primitiveType, 0, indicesAmount);
+			
+			if (not eboId)
+				glDrawArrays(primitiveType, 0, indicesAmount);
+			else
+				glDrawElements(primitiveType, indicesAmount, GL_UNSIGNED_INT, 0);
+			
 			glBindVertexArray(0);
 		}
 
