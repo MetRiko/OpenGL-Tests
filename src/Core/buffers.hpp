@@ -17,9 +17,9 @@ namespace gl {
 		std::vector<float> vertices;
 		std::vector<unsigned int> indices;
 
-		unsigned int vaoId;
-		unsigned int vboId;
-		unsigned int eboId;
+		unsigned int vaoId = 0;
+		unsigned int vboId = 0;
+		unsigned int eboId = 0;
 
 		ShaderProgram* shaderProgram = nullptr;
 
@@ -97,7 +97,6 @@ namespace gl {
 		void setup() {
 			create();
 			configure();
-			bindVBO();
 		}
 
 		void defineVBO(const std::initializer_list<float> vertices) {
