@@ -37,7 +37,7 @@ int main()
 	// shaderProgram2.loadAndAttach("shaders/default.frag");//, "shaders/default.frag");
 	// program.load(gl::Shader::Vertex, "shaders/default.vert", gl::Shader::Fragment, "shaders/default.frag");
 	// shaderProgram2.setup();
-	shaderProgram2.defineUniform("customColor");
+	shaderProgram2.defineUniforms("customColor");
 
 	// program.defineUniform("customColor");
 	// program.defineUniform("time");
@@ -69,7 +69,7 @@ int main()
 		// shaderProgram.setUniform("customColor", glm::vec3(1.f, 2.f, 3.f));
 
 		shaderProgram.setup();
-		shaderProgram.defineUniform("customColor");
+		shaderProgram.defineUniforms("customColor");
 	}
 
 	gl::VAO vao; 
