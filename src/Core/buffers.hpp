@@ -34,8 +34,13 @@ namespace gl {
 		};
 
 		int primitiveType = Triangles;
+		bool outlineMode = false;
 
 		unsigned int indicesAmount = 0;
+
+		void outline(bool flag) {
+			outlineMode = flag;
+		}
 
 		void createVAO() {
 			glGenVertexArrays(1, &vaoId);  
@@ -128,6 +133,11 @@ namespace gl {
 			bindShader();
 			bindVAO();			
 			
+			if (outlineMode == true) 
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			else
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 			if (not eboId)
 				glDrawArrays(primitiveType, 0, indicesAmount);
 			else
