@@ -5,6 +5,7 @@
 #include <fstream>
 #include <streambuf>
 #include <string_view>
+#include <unordered_map>
 
 #include <glm/vec3.hpp>
 
@@ -169,6 +170,8 @@ namespace gl {
 
 		bool created = false;
 
+		std::unordered_map<std::string, unsigned int> uniforms;
+
 		void create() {
 			programId = glCreateProgram();
 			created = true;
@@ -226,6 +229,19 @@ namespace gl {
 		void bind() {
 			glUseProgram(programId);
 		}
+
+		// Uniforms
+
+		void defineUniform(const std::string& name) {
+			uniforms[name] = glGetUniformLocation(programId, name.c_str());
+		}
+
+		void setUniform(const std::string& name, const glm::vec3& arg) {
+			bind();
+			glUniform3f(uniforms[name], arg.x, arg.y, arg.z);
+		}
+
+		// Conversion
 
 		operator GLuint() {
 			return programId;
