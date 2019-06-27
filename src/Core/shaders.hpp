@@ -184,7 +184,7 @@ namespace gl {
 			}
 		}
 
-		void use() {
+		void bind() {
 			glUseProgram(programId);
 		}
 

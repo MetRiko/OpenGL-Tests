@@ -51,6 +51,10 @@ namespace gl {
 				glGenBuffers(1, &eboId);
 		}
 
+		ShaderProgram& program() {
+			return *shaderProgram;
+		}
+
 		void create() {
 			createVAO();
 			createVBO();
@@ -115,13 +119,13 @@ namespace gl {
 			this->shaderProgram = &shaderProgram;
 		}
 
-		void useShader() {		
+		void bindShader() {		
 			if (shaderProgram)	
-				glUseProgram(*shaderProgram);
+				shaderProgram->bind();
 		}
 
 		void draw() {
-			useShader();
+			bindShader();
 			bindVAO();			
 			
 			if (not eboId)
