@@ -50,6 +50,22 @@ namespace gl {
 		unsigned int type = 0; 
 		std::string src;
 
+		Shader() {
+
+		}
+
+		Shader(const std::string& filename, bool setup = true) {
+			load(filename);
+			if (setup == true)
+				this->setup();
+		}
+
+		Shader(const std::string& filename, int type, bool setup = true) {
+			load(filename, type);	
+			if (setup == true)
+				this->setup();		
+		}
+
 		~Shader() {
 			glDeleteShader(shaderId);
 		}
@@ -120,7 +136,11 @@ namespace gl {
 			}
 			else
 				gl::Logger.log("ERROR::SHADER::LOADING_SHADER_FILE ", filepath);
+		}
 
+		void loadAndSetup(const std::string_view& filepath, int type = -1) {
+			load(filepath, type);
+			setup();
 		}
 
 		void source(unsigned int type, const std::string& src) {
