@@ -83,6 +83,10 @@ namespace gl {
 				glfwSetWindowShouldClose(*window, true);
 		}
 
+		void quit() {
+			glfwSetWindowShouldClose(*window, true);
+		}
+
 		void setFunctions(auto events, auto update, auto render) {
 			eventsFunction = events;
 			updateFunction = update;
