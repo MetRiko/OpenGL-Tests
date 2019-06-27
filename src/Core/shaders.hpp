@@ -6,8 +6,14 @@
 #include <streambuf>
 #include <string_view>
 #include <unordered_map>
+#include <type_traits>
+#include <tuple>
+#include <utility>
+#include <functional>
 
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -227,6 +233,7 @@ namespace gl {
 			glUseProgram(programId);
 		}
 
+		// - - - Uniforms - - - //
 
 		template <typename... Strings>
 		void defineUniforms(Strings&&... names) {
@@ -241,9 +248,68 @@ namespace gl {
 			// gl::Logger.log(":\n");
 		}
 
-		void setUniform(const std::string& name, const glm::vec3& arg) {
+		// Set uniform by passing : {a,b,c,...}
+		template <typename String, typename Type, size_t Size, typename Indices = std::make_index_sequence<Size>>
+		void uniform(String&& name, Type (&&list)[Size]) {
+			_uniformAddr(std::forward<String>(name), std::forward<Type*>(list), Indices{});			
+		}
+
+		// Set uniform by passing : glm::vec
+		template <typename String, int Size, typename Type, glm::qualifier Precision, typename Indices = std::make_index_sequence<Size>>
+		void uniform(String&& name, glm::vec<Size, Type, Precision>&& vec) {
+			_uniformAddr(std::forward<String>(name), std::forward<Type*>((Type*)&vec), Indices{});
+		}
+
+		// [support] Set uniform by passing : address of any struct (etc. struct{Type,Type,...})
+		template <typename String, typename Type, std::size_t... I>
+		void _uniformAddr(String&& name, Type*&& addr, std::index_sequence<I...>) {
+			uniform(std::forward<String>(name), std::forward<Type>(*(addr + I))...);
+		}
+
+		// Set uniform by passing : args...
+		template <typename String, typename... Types>
+		void uniform(String&& name, Types&&... values) {
+
+			// * * * Debug purposes * * * //
+			// gl::Logger.log((typeid(values).name())...);
+			// gl::Logger.log(values...);
+
 			bind();
-			glUniform3f(uniforms[name], arg.x, arg.y, arg.z);
+
+			using type = typename std::tuple_element<0, std::tuple<Types...>>::type;
+			constexpr auto size = sizeof...(Types);
+			
+			unsigned int loc = uniforms[std::data(std::forward<String>(name))];
+
+
+			// * * * Debug purposes * * * //
+			auto debugLog = [&values...](auto&& sufix){
+				gl::Logger.log("glUniform", sufix, " : ");
+				for (auto&& v : {values...})
+					gl::Logger.log(' ', v);
+				gl::Logger.log('\n');
+			};
+
+			if constexpr (std::is_floating_point_v<type>) {
+				if constexpr (size == 1) 		{ glUniform1f(loc, values...); debugLog("1f"); }
+				else if constexpr (size == 2) 	{ glUniform2f(loc, values...); debugLog("2f"); }
+				else if constexpr (size == 3) 	{ glUniform3f(loc, values...); debugLog("3f"); }
+				else if constexpr (size == 4) 	{ glUniform4f(loc, values...); debugLog("4f"); }
+			}
+			else if constexpr (std::is_integral_v<type>) {
+				if constexpr (std::is_unsigned_v<type>) { 
+					if constexpr (size == 1) 		{ glUniform1ui(loc, values...); debugLog("1u"); }
+					else if constexpr (size == 2) 	{ glUniform2ui(loc, values...); debugLog("2u"); }
+					else if constexpr (size == 3) 	{ glUniform3ui(loc, values...); debugLog("3u"); }
+					else if constexpr (size == 4) 	{ glUniform4ui(loc, values...); debugLog("4u"); }
+				}
+				else {
+					if constexpr (size == 1) 		{ glUniform1i(loc, values...); debugLog("1i"); }
+					else if constexpr (size == 2) 	{ glUniform2i(loc, values...); debugLog("2i"); }
+					else if constexpr (size == 3) 	{ glUniform3i(loc, values...); debugLog("3i"); }
+					else if constexpr (size == 4) 	{ glUniform4i(loc, values...); debugLog("4i"); }
+				}
+			}
 		}
 
 		// - - - Conversion - - - //
