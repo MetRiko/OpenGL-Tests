@@ -232,8 +232,19 @@ namespace gl {
 
 		// Uniforms
 
-		void defineUniform(const std::string& name) {
-			uniforms[name] = glGetUniformLocation(programId, name.c_str());
+		// * * * To do * * *
+		// - setUniform [universal]
+
+		template <typename... Strings>
+		void defineUniforms(Strings&&... names) {
+
+			(uniforms.emplace(std::forward<Strings>(names), 
+				glGetUniformLocation(programId, std::data(std::forward<Strings>(names)))), ...);
+
+			// for (auto& key : uniforms) {
+			// 	gl::Logger.log(key.first, ", ");
+			// }
+			// gl::Logger.log(":\n");
 		}
 
 		void setUniform(const std::string& name, const glm::vec3& arg) {
