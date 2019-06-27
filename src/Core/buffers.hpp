@@ -99,7 +99,8 @@ namespace gl {
 			if (not vertices.empty()) {
 				int size = sizeof(float) * vertices.size();
 				glBufferData(GL_ARRAY_BUFFER, size, &vertices.front(), GL_STATIC_DRAW);
-				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+				// glVertexAttribPointer(ptrId, count, type, GL_FALSE, rowSize * sizeof(float), reinterpret_cast<void*>(sizeof(float)*startOffset));
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), reinterpret_cast<void*>(sizeof(float)*0));
 				glEnableVertexAttribArray(0);
 			}
 		}
