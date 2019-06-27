@@ -32,7 +32,7 @@ int main()
 	gl::ShaderProgram shaderProgram2;
 	// shaderProgram2.loadAndAttach("shaders/default.vert", "shaders/default.frag");
 	// shaderProgram2.loadAttach("shaders/default.frag", "shaders/default.vert");
-	shaderProgram2.loadAndSetup("shaders/default.frag", "shaders/default.vert");
+	shaderProgram2.loadAndSetup("shaders/default.vert", "shaders/default.frag");
 	// shaderProgram2.loadAndAttach("shaders/default.vert");//, "shaders/default.frag");
 	// shaderProgram2.loadAndAttach("shaders/default.frag");//, "shaders/default.frag");
 	// program.load(gl::Shader::Vertex, "shaders/default.vert", gl::Shader::Fragment, "shaders/default.frag");
@@ -87,7 +87,7 @@ int main()
     vao.primitive(gl::VAO::Triangles);
     // vao.outline(true);
     // vao.applyShader(shaderProgram);
-    vao.applyShader(shaderProgram);
+    vao.applyShader(shaderProgram2);
     vao.setup();
 
 
@@ -98,13 +98,67 @@ int main()
 		[&window](double deltaTime){},
 		[&](){
 
-			// shaderProgram.setUniform("customColor", 1.f, 2.f, 3.f);
-			// shaderProgram.setUniform("customColor", {1.f, 2.f, 3.f});
-			// shaderProgram.setUniform("customColor", glm::vec3(1.f, 2.f, 3.f));
-			// shaderProgram.setUniform("time", 1.f);
+			gl::Logger.log("\nargs... | Type: float\n");
+			vao.uniform("myColor", 0.1f);
+			vao.uniform("myColor", 0.1f, 0.2f);
+			vao.uniform("myColor", 0.1f, 0.2f, 0.3f);
+			vao.uniform("myColor", 0.1f, 0.2f, 0.3f, 0.4f);
+			gl::Logger.log("\nargs... | Type: double\n");
+			vao.uniform("myColor", 0.1);
+			vao.uniform("myColor", 0.1, 0.2);
+			vao.uniform("myColor", 0.1, 0.2, 0.3);
+			vao.uniform("myColor", 0.1, 0.2, 0.3, 0.4);
+			gl::Logger.log("\nargs... | Type: unsigned int\n");
+			vao.uniform("myColor", 1u);
+			vao.uniform("myColor", 1u, 2u);
+			vao.uniform("myColor", 1u, 2u, 3u);
+			vao.uniform("myColor", 1u, 2u, 3u, 4u);
+			gl::Logger.log("\nargs... | Type: int\n");
+			vao.uniform("myColor", 1);
+			vao.uniform("myColor", 1, 2);
+			vao.uniform("myColor", 1, 2, 3);
+			vao.uniform("myColor", 1, 2, 3, 4);
 
-			vao.program().setUniform("customColor", glm::vec3(0.1f, 0.f, 0.7f));
+			gl::Logger.log("\nglm::vec | Type: float\n");
+			vao.uniform("myColor", glm::vec2(0.1f, 0.2f));
+			vao.uniform("myColor", glm::vec3(0.1f, 0.2f, 0.3f));
+			vao.uniform("myColor", glm::vec4(0.1f, 0.2f, 0.3f, 0.4f));
+			gl::Logger.log("\nglm::vec | Type: double\n");
+			vao.uniform("myColor", glm::vec2(0.1, 0.2));
+			vao.uniform("myColor", glm::vec3(0.1, 0.2, 0.3));
+			vao.uniform("myColor", glm::vec4(0.1, 0.2, 0.3, 0.4));
+			gl::Logger.log("\nglm::vec | Type: unsigned int\n");
+			vao.uniform("myColor", glm::uvec2(1u, 2u));
+			vao.uniform("myColor", glm::uvec3(1u, 2u, 3u));
+			vao.uniform("myColor", glm::uvec4(1u, 2u, 3u, 4u));
+			gl::Logger.log("\nglm::vec | Type: int\n");
+			vao.uniform("myColor", glm::ivec2(1, 2));
+			vao.uniform("myColor", glm::ivec3(1, 2, 3));
+			vao.uniform("myColor", glm::ivec4(1, 2, 3, 4));
+
+			gl::Logger.log("\n{...} | Type: float\n");
+			vao.uniform("myColor", {0.1f});
+			vao.uniform("myColor", {0.1f, 0.2f});
+			vao.uniform("myColor", {0.1f, 0.2f, 0.3f});
+			vao.uniform("myColor", {0.1f, 0.2f, 0.3f, 0.4f});
+			gl::Logger.log("\n{...} | Type: double\n");
+			vao.uniform("myColor", {0.1});
+			vao.uniform("myColor", {0.1, 0.2});
+			vao.uniform("myColor", {0.1, 0.2, 0.3});
+			vao.uniform("myColor", {0.1, 0.2, 0.3, 0.4});
+			gl::Logger.log("\n{...} | Type: unsigned int\n");
+			vao.uniform("myColor", {1u});
+			vao.uniform("myColor", {1u, 2u});
+			vao.uniform("myColor", {1u, 2u, 3u});
+			vao.uniform("myColor", {1u, 2u, 3u, 4u});
+			gl::Logger.log("\n{...} | Type: int\n");
+			vao.uniform("myColor", {1});
+			vao.uniform("myColor", {1, 2});
+			vao.uniform("myColor", {1, 2, 3});
+			vao.uniform("myColor", {1, 2, 3, 4});
+
 			vao.draw();
+			engine.quit();
 		}
 	);
 
