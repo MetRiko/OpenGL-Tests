@@ -175,12 +175,12 @@ namespace gl {
 		}
 
 		template<typename... Args>
-		void attach(Args&... shaders) {
+		void attach(Args&&... shaders) {
 			
 			if (not created) 
 				create();
 
-			glAttachShader(programId, (shaders, ...));
+			glAttachShader(programId, (std::forward<Args>(shaders), ...));
 		}
 
 		void link() {			
