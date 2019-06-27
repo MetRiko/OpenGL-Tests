@@ -147,6 +147,23 @@ namespace gl {
 			glBindVertexArray(0);
 		}
 
+		// - - - Uniforms [wrappers] - - - 
+
+		template <typename String, typename Type, size_t Size, typename Indices = std::make_index_sequence<Size>>
+		void uniform(String&& name, Type (&&list)[Size]) {
+			shaderProgram->uniform(std::forward<String>(name), std::forward<decltype(list)>(list));
+		}
+
+		template <typename String, int Size, typename Type, glm::qualifier Precision, typename Indices = std::make_index_sequence<Size>>
+		void uniform(String&& name, glm::vec<Size, Type, Precision>&& vec) {
+			shaderProgram->uniform(std::forward<String>(name), std::forward<decltype(vec)>(vec));
+		}
+
+		template <typename String, typename... Types>
+		void uniform(String&& name, Types&&... values) {
+			shaderProgram->uniform(std::forward<String>(name), std::forward<decltype(values)>(values)...);
+		}
+
 	};
 
 
