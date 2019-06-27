@@ -39,11 +39,11 @@ namespace gl {
 			"	frag_colour = vec4(0.5, 0.0, 0.5, 1.0);"
 			"}";
 
-		static std::string getDefaultVertexSource() {
-			return std::string(DEFAULT_VERTEX_SHADER); 
+		static const char* getDefaultVertexSource() {
+			return DEFAULT_VERTEX_SHADER; 
 		}
-		static std::string getDefaultFragmentSource() {
-			return std::string(DEFAULT_FRAGMENT_SHADER); 
+		static const char* getDefaultFragmentSource() {
+			return DEFAULT_FRAGMENT_SHADER; 
 		}
 
 		enum {
