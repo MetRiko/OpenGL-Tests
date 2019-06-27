@@ -162,9 +162,6 @@ namespace gl {
 		}
 	};
 
-	// std::string Shader::DEFAULT_VERTEX_SHADER = "asd";
-	// std::string Shader::DEFAULT_FRAGMENT_SHADER = "asd";
-
 	struct ShaderProgram {
 		unsigned int programId;
 
@@ -230,10 +227,6 @@ namespace gl {
 			glUseProgram(programId);
 		}
 
-		// Uniforms
-
-		// * * * To do * * *
-		// - setUniform [universal]
 
 		template <typename... Strings>
 		void defineUniforms(Strings&&... names) {
@@ -241,6 +234,7 @@ namespace gl {
 			(uniforms.emplace(std::forward<Strings>(names), 
 				glGetUniformLocation(programId, std::data(std::forward<Strings>(names)))), ...);
 
+			// * * * Debug purposes * * * //
 			// for (auto& key : uniforms) {
 			// 	gl::Logger.log(key.first, ", ");
 			// }
@@ -252,7 +246,7 @@ namespace gl {
 			glUniform3f(uniforms[name], arg.x, arg.y, arg.z);
 		}
 
-		// Conversion
+		// - - - Conversion - - - //
 
 		operator GLuint() {
 			return programId;
