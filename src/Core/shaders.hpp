@@ -189,6 +189,25 @@ namespace gl {
 			linkDebugInfo();
 		}
 
+		// Load shaders from path : with auto deduction type [.frag/.vert]
+		template<typename... Files>
+		void loadAndAttach(Files&&... files) {	
+
+			auto func = [this](auto&& filename){
+				gl::Shader shader;
+				shader.load(std::forward<decltype(filename)>(filename));
+				shader.setup();
+				attach(shader);
+			};
+			(func(std::forward<Files>(files)), ...);
+		}
+
+		template<typename... Files>
+		void loadAndSetup(Files&&... files) {	
+			loadAndAttach(files...);
+			setup();
+		}
+
 		void setup() {
 			link();
 		}
