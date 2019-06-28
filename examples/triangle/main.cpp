@@ -87,7 +87,7 @@ int main()
     vao.primitive(gl::VAO::Triangles);
     // vao.outline(true);
     // vao.applyShader(shaderProgram);
-    vao.applyShader(shaderProgram2);
+    vao.applyShader(shaderProgram);
     vao.setup();
 
 
@@ -156,6 +156,17 @@ int main()
 			vao.uniform("myColor", {1, 2});
 			vao.uniform("myColor", {1, 2, 3});
 			vao.uniform("myColor", {1, 2, 3, 4});
+
+
+			gl::Logger.log("\n--- others --- \n");
+
+			const glm::vec3 v(0.3f, 0.1f, 0.6f);
+			// glm::vec3 v(0.3f, 0.1f, 0.6f);
+			// glm::vec3&& rv = v;
+
+			vao.program().uniform("customColor", v);
+			// vao.program().uniform("customColor", glm::vec3(0.3f, 0.1f, 0.6f));
+			// vao.program().uniform("customColor", {0.3f, 0.1f, 0.6f});
 
 			vao.draw();
 			engine.quit();
