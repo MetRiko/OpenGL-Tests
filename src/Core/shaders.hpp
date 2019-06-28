@@ -210,7 +210,7 @@ namespace gl {
 
 		template<typename... Files>
 		void loadAndSetup(Files&&... files) {	
-			loadAndAttach(files...);
+			loadAndAttach(std::forward<Files>(files)...);
 			setup();
 		}
 
@@ -239,7 +239,7 @@ namespace gl {
 		void defineUniforms(Strings&&... names) {
 
 			(uniforms.emplace(std::forward<Strings>(names), 
-				glGetUniformLocation(programId, std::data(std::forward<Strings>(names)))), ...);
+				glGetUniformLocation(programId, std::data(names))), ...);
 
 			// * * * Debug purposes * * * //
 			// for (auto& key : uniforms) {
@@ -279,7 +279,7 @@ namespace gl {
 			using type = typename std::tuple_element<0, std::tuple<Types...>>::type;
 			constexpr auto size = sizeof...(Types);
 			
-			unsigned int loc = uniforms[std::data(std::forward<String>(name))];
+			unsigned int loc = uniforms[std::data(name)];
 
 
 			// * * * Debug purposes * * * //
