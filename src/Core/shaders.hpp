@@ -116,7 +116,7 @@ namespace gl {
 			}
 		}
 
-		void load(const std::string_view& filepath, int type = -1) {
+		void load(std::string_view filepath, int type = -1) {
 			std::ifstream file;
 			file.open(filepath.data());
 			if (file.good()) 
@@ -145,7 +145,7 @@ namespace gl {
 				gl::Logger.log("ERROR::SHADER::LOADING_SHADER_FILE ", filepath);
 		}
 
-		void loadAndSetup(const std::string_view& filepath, int type = -1) {
+		void loadAndSetup(std::string_view filepath, int type = -1) {
 			load(filepath, type);
 			setup();
 		}
