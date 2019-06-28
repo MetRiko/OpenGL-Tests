@@ -186,7 +186,7 @@ namespace gl {
 			if (not created) 
 				create();
 
-			glAttachShader(programId, (std::forward<Args>(shaders), ...));
+			(glAttachShader(programId, shaders), ...);
 		}
 
 		void link() {			
