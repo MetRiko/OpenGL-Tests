@@ -18,6 +18,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <Tools/traits.hpp>
 #include <Core/logger.hpp>
 
 
@@ -255,9 +256,13 @@ namespace gl {
 		}
 
 		// Set uniform by passing : glm::vec
-		template <typename String, int Size, typename Type, glm::qualifier Precision, typename Indices = std::make_index_sequence<Size>>
-		void uniform(String&& name, glm::vec<Size, Type, Precision>&& vec) {
-			_uniformAddr(std::forward<String>(name), std::forward<Type*>((Type*)&vec), Indices{});
+		template <typename String, class Vec>
+		std::enable_if_t<traits::is_glm_vec_v<traits::remove_cvref_t<Vec>>>
+		uniform(String&& name, Vec&& vec) {
+			using Data = traits::read_glm_vec_d<Vec>;
+			using Type = typename Data::type;
+
+			_uniformAddr(std::forward<String>(name), (Type*)&vec, std::make_index_sequence<Data::size>{});
 		}
 
 		// [support] Set uniform by passing : address of any struct (etc. struct{Type,Type,...})
