@@ -262,7 +262,7 @@ namespace gl {
 
 		// [support] Set uniform by passing : address of any struct (etc. struct{Type,Type,...})
 		template <typename String, typename Type, std::size_t... I>
-		void _uniformAddr(String&& name, Type*&& addr, std::index_sequence<I...>) {
+		void _uniformAddr(String&& name, Type* addr, std::index_sequence<I...>) {
 			uniform(std::forward<String>(name), std::forward<Type>(*(addr + I))...);
 		}
 
