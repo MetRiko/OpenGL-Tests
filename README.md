@@ -1,2 +1,2 @@
-OpenGL - Repo for learning
+Repo created for learning modern OpenGL and C++17+
 
